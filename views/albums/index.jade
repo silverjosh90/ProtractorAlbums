@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+  h1 Albums
+  a(href="/albums/new") New Album
+  table
+    tr(class="header")
+      th(class="genre") Genre
+      th(class="artist") Artist
+      th(class="album") Album
+    for album in albums
+      tr(class="albumRow")
+        td(id=album.genre)= album.genre
+        td(id=album.artist)= album.artist
+        td(id=album.album)
+          a(href="/albums/"+album.album)=album.album

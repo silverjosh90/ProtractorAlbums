@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  h4 Edit Album
+  form(action="/albums/"+album.album+"?_method=PUT" method="post")
+    label(for="Artist") Artist
+    input(type="text" id="artistEdit" value=album.artist name="artist")
+    br
+    label(for="Album") Album
+    input(type="text" id="albumEdit" value=album.album name="album")
+    br
+
+    label(for="genre") Select Genre:
+    select(name="genre" id="genreEdit")
+      option(value='') Select a Genre
+      option(value="Jazz" selected=(album.genre == 'Jazz')) Jazz
+      option(value="Rock" selected=(album.genre == 'Rock')) Rock
+      option(value="Folk" selected=(album.genre == 'Folk')) Folk
+    br
+    label(for="rating") Rating
+      | 1
+      input(type="radio" class="rating" name="rating" selected value=1)
+      input(type="radio" class="rating" name="rating" value=2)
+      input(type="radio" class="rating" name="rating" value=3)
+      input(type="radio" class="rating" name="rating" value=4)
+      input(type="radio" class="rating" name="rating" value=5)
+      | 5
+    br
+    label(for="explicit") Contains explicit lyrics
+    input(type="checkbox" value="on" id="explicit" name="explicit" checked)
+    br
+    input(type="submit" id="submitEdit" value="Create Album")
+    a(href="/albums" id="cancel") Cancel
