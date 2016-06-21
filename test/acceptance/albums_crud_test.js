@@ -11,6 +11,12 @@ var blink = {
   album: 'Dude Ranch'
 }
 
+var macklemore = {
+  genre: 'rap',
+  artist: 'macklemore',
+  album: 'thrift shop'
+}
+
 
 before(function() {
   server = http.createServer(require('../../app'));
@@ -176,20 +182,35 @@ describe('when I visit /albums/:albumName', function(){
       expect(text).to.equal('Genre: Rock')
     })
   })
-  it('should take me to /ablums/:albumName/edit when I click edit', function(){
+  it('should take me to /ablums/:albumName/edit when I click edit', function(done){
     browser.get('/albums/Dude%20Ranch')
     element(by.id('editButton')).click()
     browser.getCurrentUrl().then(function(url){
       expect(url).to.equal('http://localhost:5000/albums/Dude%20Ranch/edit')
+      done()
     })
   })
-  xdescribe('when a user clicks delete', function(){
-    it('should redirect me to /albums', function(){
-      browser.get('/albums/Dude%20Ranch')
-      element(by.id('deleteButton')).click()
-      browser.pause()
-      browser.getCurrentUrl().then(function(url){
-        expect(url).to.equal('http://localhost:5000/albums')
+  describe('when a user clicks delete', function(){
+    it('should redirect me to /albums', function(done){
+      albumCollection.insert(macklemore, function(err, album) {
+        browser.get('/albums/thrift%20shop')
+        element(by.id('deleteButton')).click()
+        browser.getCurrentUrl().then(function(url){
+          expect(url).to.equal('http://localhost:5000/albums')
+          done()
+        })
+      })
+    })
+    it('/should delete record when clicked', function(done){
+      albumCollection.insert(macklemore, function(err, album) {
+        browser.get('/albums/thrift%20shop')
+        element(by.id('deleteButton')).click()
+        element(by.css('#thrift shop')).isPresent().then(function(result){
+          expect(result).to.equal(false)
+          done()
+        })
+
+        // expect(element(by.css('#thrift')).isDisplayed()).to.be.False
       })
     })
   })
@@ -215,7 +236,6 @@ describe('When I visit /albums/:albumName/edit', function(){
     idExpression('Backstreet', 'Backstreet')
   })
 })
-
 
 function tagNameExpression(tag, string){
   element(by.tagName(tag)).getText().then(function(text){

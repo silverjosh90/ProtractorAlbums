@@ -4,6 +4,11 @@ var db = require('../config/database')
 var albumCollection = db.get('albums')
 
 /* GET users listing. */
+router.get('/:albumName/edit', function(req, res, next) {
+  albumCollection.findOne({album: req.params.albumName}, function(err, album){
+    res.render('albums/edit', {album: album})
+  })
+})
 router.get('/', function(req, res, next) {
   albumCollection.find({}, function(err, albums){
     res.render('./albums/index', {albums: albums})
@@ -20,32 +25,25 @@ router.get('/:albumName', function(req, res, next) {
 })
 
 router.post('/', function(req, res, next) {
-  console.log(req.body);
   albumCollection.insert(req.body, function(err, albums){
     if(err) console.log(err);
     res.redirect('/albums')
   })
 })
 router.put('/:albumName', function(req, res, next) {
-  console.log('derping hard')
-  console.log(req.body);
-
   albumCollection.update({album: req.params.albumName},req.body, function(err, albums){
     if(err) console.log(err);
     console.log('getting here');
     res.redirect('/albums')
   })
 })
-router.get('/:albumName/edit', function(req, res, next) {
-  albumCollection.findOne({album: req.params.albumName}, function(err, album){
-    res.render('albums/edit', {album: album})
-  })
-})
 router.delete('/:albumName', function(req, res, next) {
   albumCollection.findOne({album: req.params.albumName}, function(err, album){
-    res.redirect('/albums')
+    albumCollection.remove(album, function(err){
+      if(err) console.log(err)
+      res.redirect('/albums')
+    })
   })
 })
-
 
 module.exports = router;
