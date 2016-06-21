@@ -183,10 +183,11 @@ describe('when I visit /albums/:albumName', function(){
       expect(url).to.equal('http://localhost:5000/albums/Dude%20Ranch/edit')
     })
   })
-  describe('when a user clicks delete', function(){
+  xdescribe('when a user clicks delete', function(){
     it('should redirect me to /albums', function(){
       browser.get('/albums/Dude%20Ranch')
       element(by.id('deleteButton')).click()
+      browser.pause()
       browser.getCurrentUrl().then(function(url){
         expect(url).to.equal('http://localhost:5000/albums')
       })

@@ -5,4 +5,5 @@ block content
   h4(id="showGenre") Genre: #{album.genre}
   h4(id="showArtist") Artist: #{album.artist}
   a(href="/albums/"+album.album+"/edit" id="editButton") Edit
-  a(href="/albums/"+album.album+"/delete" id="deleteButton") Delete
+  form()
+    a(href="/albums/"+album.album+"/delete" id="deleteButton") Delete
